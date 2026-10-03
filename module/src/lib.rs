@@ -92,7 +92,13 @@ fn pre_specialize(
     if should_hook {
         info!("hook package = [{}], process = [{}]", package_name, process);
 
-        let pkg_props = config::get_properties_for_package(package_name);
+        // 让哔哩哔哩和拼多多套用与 QQ 相同的完整华为厂商属性伪装
+        let target_pkg = match package_name {
+            "tv.danmaku.bili" | "com.xunmeng.pinduoduo" => "com.tencent.mobileqq",
+            _ => package_name,
+        };
+
+        let pkg_props = config::get_properties_for_package(target_pkg);
 
         if !pkg_props.build_properties.is_empty() {
             hook::hook_build(&mut env, pkg_props.build_properties);
