@@ -92,9 +92,9 @@ fn pre_specialize(
     if should_hook {
         info!("hook package = [{}], process = [{}]", package_name, process);
 
-        // 让哔哩哔哩和拼多多套用与 QQ 相同的完整华为厂商属性伪装
+        // 让哔哩哔哩、拼多多、百度贴吧直接套用与 QQ 相同的完整华为厂商属性伪装
         let target_pkg = match package_name {
-            "tv.danmaku.bili" | "com.xunmeng.pinduoduo" => "com.tencent.mobileqq",
+            "tv.danmaku.bili" | "com.xunmeng.pinduoduo" | "com.baidu.tieba" => "com.tencent.mobileqq",
             _ => package_name,
         };
 
