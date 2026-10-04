@@ -8,7 +8,6 @@ use zygisk_api::{
     raw::ZygiskRaw,
     register_companion, register_module, ZygiskModule,
 };
-// ZygiskOption is re-exported by the V4 transparent module via `pub use crate::raw::v4::transparent::*`
 use zygisk_api::api::v4::ZygiskOption;
 
 pub mod config;
@@ -34,7 +33,6 @@ impl ZygiskModule for HmsPushModule {
                 .with_tag("HmsPushZygisk"),
         );
 
-        // args.nice_name and args.app_data_dir are &JString<'a>
         let process_name = jstring_to_string(&mut env, args.nice_name);
         let app_data_dir = jstring_to_string(&mut env, args.app_data_dir);
 
@@ -62,17 +60,13 @@ impl ZygiskModule for HmsPushModule {
     }
 }
 
-/// Convert a JString reference to a Rust String.
 fn jstring_to_string(env: &mut JNIEnv<'_>, jstr: &jni::objects::JString<'_>) -> String {
-    // SAFETY: env comes from Zygisk's trusted JNI entry which provides a valid env.
     match env.get_string(jstr) {
         Ok(s) => s.into(),
         Err(_) => String::new(),
     }
 }
 
-/// Extract the last path component (package name) from an app_data_dir path.
-/// Handles: /data/user/<uid>/<pkg>, /data/data/<pkg>, /mnt/expand/.../<pkg>
 fn parse_package_name(app_data_dir: &str) -> &str {
     app_data_dir
         .rsplit('/')
@@ -92,13 +86,7 @@ fn pre_specialize(
     if should_hook {
         info!("hook package = [{}], process = [{}]", package_name, process);
 
-        // 让哔哩哔哩、拼多多、百度贴吧直接套用与 QQ 相同的完整华为厂商属性伪装
-        let target_pkg = match package_name {
-            "tv.danmaku.bili" | "com.xunmeng.pinduoduo" | "com.baidu.tieba" => "com.tencent.mobileqq",
-            _ => package_name,
-        };
-
-        let pkg_props = config::get_properties_for_package(target_pkg);
+        let pkg_props = config::get_properties_for_package(package_name);
 
         if !pkg_props.build_properties.is_empty() {
             hook::hook_build(&mut env, pkg_props.build_properties);
@@ -112,7 +100,6 @@ fn pre_specialize(
     }
 }
 
-/// Ask the companion process whether this (package, process) pair should be hooked.
 fn query_should_hook(api: &mut ZygiskApi<'_, V4>, package_name: &str, process_name: &str) -> bool {
     debug!(
         "query_should_hook: package = [{}], process = [{}]",
@@ -130,16 +117,13 @@ fn query_should_hook(api: &mut ZygiskApi<'_, V4>, package_name: &str, process_na
     }
 }
 
-/// Write "package_name\nprocess_name\n" to the companion and read back 1 byte.
 fn send_query(stream: &mut UnixStream, package_name: &str, process_name: &str) -> bool {
-    // Send the two fields as newline-terminated strings.
     let payload = format!("{}\n{}\n", package_name, process_name);
     if let Err(e) = stream.write_all(payload.as_bytes()) {
         error!("Failed to send query: {}", e);
         return false;
     }
 
-    // Read the single-byte response: 1 = hook, 0 = skip.
     let mut resp = [0u8; 1];
     match stream.read_exact(&mut resp) {
         Ok(_) => resp[0] != 0,
