@@ -18,6 +18,28 @@ pub const DEFAULT_PACKAGE_PROPS: PackageProps<'static> = PackageProps {
     build_properties: &[("BRAND", "Huawei"), ("MANUFACTURER", "HUAWEI")],
 };
 
+// 百度贴吧专属：华为 Mate 60 Pro 完整参数
+const MATE_60_PRO_PROPS: PackageProps<'static> = PackageProps {
+    package_name: "com.baidu.tieba",
+    system_properties: &[
+        ("ro.product.brand", "HUAWEI"),
+        ("ro.product.manufacturer", "HUAWEI"),
+        ("ro.product.model", "ALN-AL00"),
+        ("ro.product.name", "ALN-AL00"),
+        ("ro.product.device", "ALN-AL00"),
+        ("ro.product.marketname", "HUAWEI Mate 60 Pro"),
+        ("ro.build.version.emui", "EmotionUI_8.0.0"),
+        ("ro.build.hw_emui_api_level", "21"),
+    ],
+    build_properties: &[
+        ("BRAND", "HUAWEI"),
+        ("MANUFACTURER", "HUAWEI"),
+        ("MODEL", "ALN-AL00"),
+        ("PRODUCT", "ALN-AL00"),
+        ("DEVICE", "ALN-AL00"),
+    ],
+};
+
 pub const PACKAGE_PROPS: &[PackageProps] = &[
     PackageProps {
         package_name: HMSPUSH_PACKAGE_NAME,
@@ -54,22 +76,7 @@ pub const PACKAGE_PROPS: &[PackageProps] = &[
         system_properties: &[],
         build_properties: &[("MANUFACTURER", "HUAWEI")],
     },
-    PackageProps {
-        package_name: "com.baidu.tieba",
-        system_properties: &[
-            ("ro.product.brand", "HUAWEI"),
-            ("ro.product.manufacturer", "HUAWEI"),
-            ("ro.product.model", "CMS-AL20"),
-            ("ro.product.marketname", "HUAWEI Mate 90 Pro"),
-            ("ro.build.version.emui", "EmotionUI_8.0.0"),
-            ("ro.build.hw_emui_api_level", "21"),
-        ],
-        build_properties: &[
-            ("BRAND", "HUAWEI"),
-            ("MANUFACTURER", "HUAWEI"),
-            ("MODEL", "CMS-AL20"),
-        ],
-    },
+    MATE_60_PRO_PROPS,
 ];
 
 #[inline]
