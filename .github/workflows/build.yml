@@ -27,9 +27,21 @@ jobs:
         uses: nttld/setup-ndk@v1
         id: setup-ndk
         with:
-          ndk-version: r27d
+          ndk-version: r27c
           add-to-path: true
-          local-cache: true
+          local-cache: false
+
+      - name: Fix NDK symlinks
+        run: |
+          BIN_DIR="${{ steps.setup-ndk.outputs.ndk-path }}/toolchains/llvm/prebuilt/linux-x86_64/bin"
+          cd "$BIN_DIR"
+          REAL_CLANG=$(ls clang-[0-9]* 2>/dev/null | head -n 1)
+          if [ -n "$REAL_CLANG" ]; then
+            ln -sf "$REAL_CLANG" clang
+            ln -sf "$REAL_CLANG" clang++
+            chmod +x clang clang++ "$REAL_CLANG"
+            echo "Successfully relinked clang to $REAL_CLANG"
+          fi
 
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@stable
@@ -56,11 +68,10 @@ jobs:
           echo "release=$(basename -s .zip build/*.zip)" >> $GITHUB_ENV
 
       - name: Upload Build Artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.release }}
           path: build/*.zip
-          archive: false
 
       - name: Get tag annotation
         id: tag
