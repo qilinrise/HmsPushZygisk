@@ -43,7 +43,33 @@ pub const PACKAGE_PROPS: &[PackageProps] = &[
         package_name: "com.tencent.mobileqq",
         system_properties: &[],
         build_properties: &[("MANUFACTURER", "HUAWEI")],
-    }
+    },
+    PackageProps {
+        package_name: "tv.danmaku.bili",
+        system_properties: &[],
+        build_properties: &[("MANUFACTURER", "HUAWEI")],
+    },
+    PackageProps {
+        package_name: "com.xunmeng.pinduoduo",
+        system_properties: &[],
+        build_properties: &[("MANUFACTURER", "HUAWEI")],
+    },
+    PackageProps {
+        package_name: "com.baidu.tieba",
+        system_properties: &[
+            ("ro.product.brand", "HUAWEI"),
+            ("ro.product.manufacturer", "HUAWEI"),
+            ("ro.product.model", "CMS-AL20"),
+            ("ro.product.marketname", "HUAWEI Mate 90 Pro"),
+            ("ro.build.version.emui", "EmotionUI_8.0.0"),
+            ("ro.build.hw_emui_api_level", "21"),
+        ],
+        build_properties: &[
+            ("BRAND", "HUAWEI"),
+            ("MANUFACTURER", "HUAWEI"),
+            ("MODEL", "CMS-AL20"),
+        ],
+    },
 ];
 
 #[inline]
