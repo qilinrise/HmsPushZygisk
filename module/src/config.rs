@@ -18,7 +18,7 @@ pub const DEFAULT_PACKAGE_PROPS: PackageProps<'static> = PackageProps {
     build_properties: &[("BRAND", "Huawei"), ("MANUFACTURER", "HUAWEI")],
 };
 
-// 百度贴吧专属：华为 Mate 60 Pro 完整参数
+// 百度贴吧专属：完整华为 Mate 60 Pro 及 HarmonyOS 系统识别特征
 const MATE_60_PRO_PROPS: PackageProps<'static> = PackageProps {
     package_name: "com.baidu.tieba",
     system_properties: &[
@@ -28,8 +28,11 @@ const MATE_60_PRO_PROPS: PackageProps<'static> = PackageProps {
         ("ro.product.name", "ALN-AL00"),
         ("ro.product.device", "ALN-AL00"),
         ("ro.product.marketname", "HUAWEI Mate 60 Pro"),
-        ("ro.build.version.emui", "EmotionUI_8.0.0"),
-        ("ro.build.hw_emui_api_level", "21"),
+        ("ro.build.version.emui", "EmotionUI_14.0.0"),
+        ("ro.build.hw_emui_api_level", "29"),
+        ("ro.build.version.harmony", "4.2.0"),
+        ("hw_sc.build.platform.version", "4.2.0"),
+        ("hw_sc.build.os.enable", "true"),
     ],
     build_properties: &[
         ("BRAND", "HUAWEI"),
