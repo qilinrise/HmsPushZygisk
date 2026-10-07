@@ -18,9 +18,9 @@ pub const DEFAULT_PACKAGE_PROPS: PackageProps<'static> = PackageProps {
     build_properties: &[("BRAND", "Huawei"), ("MANUFACTURER", "HUAWEI")],
 };
 
-// 百度贴吧专属：HUAWEI Pura 70 Pro (HBN-AL00) 伪装配置
-const TIEBA_PURA_70_PRO_PROPS: PackageProps<'static> = PackageProps {
-    package_name: "com.baidu.tieba",
+// 完整华为旗舰机及鸿蒙系统伪装属性 (HUAWEI Pura 70 Pro / HBN-AL00)
+const HUAWEI_FLAGSHIP_PROPS: PackageProps<'static> = PackageProps {
+    package_name: "",
     system_properties: &[
         ("ro.build.product", "HBN-AL00"),
         ("ro.product.brand", "HUAWEI"),
@@ -29,8 +29,11 @@ const TIEBA_PURA_70_PRO_PROPS: PackageProps<'static> = PackageProps {
         ("ro.product.model", "HBN-AL00"),
         ("ro.product.name", "HBN-AL00"),
         ("ro.product.marketname", "HUAWEI Pura 70 Pro"),
-        ("ro.build.version.emui", "EMUI13"),
+        ("ro.build.version.emui", "EmotionUI_14.0.0"),
         ("ro.build.hw_emui_api_level", "29"),
+        ("ro.build.version.harmony", "4.2.0"),
+        ("hw_sc.build.platform.version", "4.2.0"),
+        ("hw_sc.build.os.enable", "true"),
     ],
     build_properties: &[
         ("BRAND", "HUAWEI"),
@@ -77,7 +80,18 @@ pub const PACKAGE_PROPS: &[PackageProps] = &[
         system_properties: &[],
         build_properties: &[("MANUFACTURER", "HUAWEI")],
     },
-    TIEBA_PURA_70_PRO_PROPS,
+    // 百度贴吧：使用完整华为旗舰机特征
+    PackageProps {
+        package_name: "com.baidu.tieba",
+        system_properties: HUAWEI_FLAGSHIP_PROPS.system_properties,
+        build_properties: HUAWEI_FLAGSHIP_PROPS.build_properties,
+    },
+    // 中国银行：使用完整华为旗舰机特征，通过银行 App 的深度硬件校验
+    PackageProps {
+        package_name: "com.chinamworld.bocmbci",
+        system_properties: HUAWEI_FLAGSHIP_PROPS.system_properties,
+        build_properties: HUAWEI_FLAGSHIP_PROPS.build_properties,
+    },
 ];
 
 #[inline]
